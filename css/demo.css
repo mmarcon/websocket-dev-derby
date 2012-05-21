@@ -1,0 +1,205 @@
+@import url(http://fonts.googleapis.com/css?family=Just+Me+Again+Down+Here|Nixie+One|Open+Sans:400,600,300);
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;font:inherit;vertical-align:baseline}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+body{line-height:1}
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+ins{text-decoration:none}
+del{text-decoration:line-through}
+table{border-collapse:collapse;border-spacing:0}
+
+body, html {
+	height: 100%;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #111;
+}
+
+.dashboard {
+	margin-right: 27%;
+	position: relative;
+	height: 100%;
+}
+
+.photos {
+	overflow: hidden;
+}
+
+li.photo-item {
+	list-style-type: none;
+	float: left;
+	margin: 15px;
+	background-color: #fff;
+	width: 160px;
+	height: 180px;
+}
+
+li.photo-item.dragging {
+	/*box-shadow: 0 0 8px #ccc;*/
+	border: 1px solid #ccc;
+}
+
+li.photo-item.shared {
+	background-image: url(../img/shared.png);
+	background-position: bottom left;
+	background-repeat: no-repeat;
+}
+
+li.photo-item .photo {
+	width: 140px;
+	height: 120px;
+	margin: 10px auto;
+	background-color: #111;
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+li.photo-item .title {
+	font-family: 'Just Me Again Down Here', cursive;
+	font-size: 20px;
+	padding: 3px 5px;
+	text-align: center;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.2;
+}
+
+.group {
+	position: fixed;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 25%;
+	padding: 5px;
+	background-color: #eee;
+	z-index: 100;
+}
+
+.group.dragging {
+	background-color: #fff;
+}
+
+.group h3 {
+	font-family: 'Nixie One', cursive;
+	font-size: 40px;
+	margin-bottom: 18px;
+	color: #111;
+}
+
+.group .members {
+	background-color: #222;
+	border-radius: 5px;
+}
+
+.group .members li {
+	color: #eee;
+	padding: 5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.00)), color-stop(1, rgba(0,0,0,0.10)));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -o-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -ms-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	border-bottom: 1px solid #000;
+	border-top: 1px dashed #444;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 32px;
+	clear: both;
+	height: 32px;
+	cursor: pointer;
+}
+
+.group .members li.hovering {
+	height: 200px;
+}
+
+.group .members li:first-child {
+	border-top: none;
+}
+
+.group .members li:last-child {
+	border-bottom: none;
+}
+
+.group .members li img {
+	float: left;
+	border-radius: 6px;
+}
+
+.group .members li h4 {
+	margin-left: 40px;
+}
+
+.init-form {
+	font-size: 14px;
+	width: 400px;
+	height: 250px;
+	padding: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -135px 0 0 -210px;
+	background: #fff;
+}
+
+.init-form p {
+	line-height: 1.2;
+}
+
+.init-form p.separator {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 20px;
+}
+
+.init-form p.empty {
+	text-align: center;
+}
+
+.init-form form {
+	margin-top: 20px;
+}
+
+.init-form label, input {
+	display: inline-block;
+}
+
+.init-form label {
+	font-weight: bold;
+}
+
+.init-form input {
+	border: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	padding: 3px;
+	width: 200px;
+	border-bottom: 1px solid #666;
+}
+
+.init-form a.button {
+	text-decoration: none;
+	color: #fff;
+	background-color: #222;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.00)), color-stop(1, rgba(0,0,0,0.10)));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -o-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -ms-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	display: inline-block;
+	padding: 5px;
+	border-radius: 4px;
+}
+
+.init-form a.empty {
+	padding: 10px;
+}

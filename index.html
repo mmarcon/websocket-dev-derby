@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Shared Dashboard</title>
+		<link rel="stylesheet" type="text/css" href="css/demo.css">
+	</head>
+	<body>
+		<div class="dashboard">
+			<ul class="photos">
+
+			</ul>
+			<div class="init-form">
+			<p>Lorem ipsum est magna occaecat consequat velit tempor qui esse est reprehenderit ut commodo officia Duis minim qui voluptate qui ullamco eiusmod non in.</p>
+			<form>
+				<label for="tags">Enter tags</label>
+				<input type="text" name="tags" id="tags" placeholder="people,beer,mokey"/>
+				<a href="#fetch" class="fetch button">Go!</a>
+			</form>
+			<p class="separator">- OR -</p>
+			<p class="empty">
+			<a href="#fetch" class="empty button">Start with an empty set</a>
+			</p>
+		</div>
+		</div>
+		<div class="group">
+			<h3>Group Name</h3>
+			<ul class="members">
+				<!--
+				<li><img src="http://flickholdr.com/32/32/person/1" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
+				<li><img src="http://flickholdr.com/32/32/person/2" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
+				<li><img src="http://flickholdr.com/32/32/person/3" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
+				-->
+			</ul>
+		</div>
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		<script src="3rd-party/jquery-ui/css/js/ui.custom.min.js"></script>
+		<!--script src="test/3rd-party/jquery.min.js"></script-->
+		<script src="http://localhost:8001/socket.io/socket.io.js"></script>
+		<script src="js/magellan.js"></script>
+		<script src="js/demo.js"></script>
+	</body>
+</html>
