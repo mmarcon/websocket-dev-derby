@@ -36,6 +36,19 @@ li.photo-item {
 	background-color: #fff;
 	width: 160px;
 	height: 180px;
+	position: relative;
+}
+
+li.photo-item .close {
+	display: block;
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	z-index: 600;
+	background: transparent url(../img/close.png) no-repeat center center;
+	top: -12px;
+	right: -12px;
+	cursor: pointer;
 }
 
 li.photo-item.dragging {

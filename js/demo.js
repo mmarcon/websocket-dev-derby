@@ -25,26 +25,19 @@ $(function(){
     
     /*Just a simple template to wrap the photos from Flickr*/
     photoTemplate = '<li class="photo-item"><div class="photo" style="background-image:url({SRC})"></div>'+
-                    '<div class="title" contenteditable="true">{TITLE}</div></li>';
+                    '<div class="title" contenteditable="true">{TITLE}</div><span class="close"></span></li>';
     memberTemplate = '<li class="{MEMBER_ID}"><img src="http://flickholdr.com/32/32/person/{COUNTER}" alt="{MEMBER_NAME}" /><h4>{MEMBER_NAME}</h4></li>';
 
     DEMO.M.join(null, 'test-group');
 
     DEMO.M.registerEventHandler(Magellan.Event.join, function(d){
-        console.log(d);
+        //console.log(d);
         var li = $(memberTemplate.replace(/\{COUNTER\}/, memberCounter++).replace(/\{MEMBER_NAME\}/g, d.display).replace(/\{MEMBER_ID\}/, d.node));
-        li.data('magellan', d);
+        li.data('magellan-node', d.node);
         li.droppable({
             drop: function(event, ui){
-                    /*
-                    var settings = ui.draggable.data('settings');
-                    if (settings.type === 'video') {
-                        settings.time = $('#video')[0].getCurrentTime() || 0;
-                    }
-                    m.transfer($(this).data('node'), settings);
-                    ui.draggable.remove();
-                    */
-                    console.log(ui.draggable.data('photo'));
+                    var photo = ui.draggable.data('photo');
+                    DEMO.M.transfer($(this).data('magellan-node'), photo);
                 },
                 hoverClass: 'hovering',
                 scope: 'transfer',
@@ -54,7 +47,33 @@ $(function(){
     });
 
     DEMO.M.registerEventHandler(Magellan.Event.leave, function(d){
+        console.log(d);
         $('.members').children('.' + d.node).remove();
+    });
+
+    DEMO.M.registerEventHandler(Magellan.Event.transfer, function(d){
+        var li = $(photoTemplate.replace(/\{SRC\}/, d.payload.src)
+                                .replace(/\{TITLE\}/, d.payload.title || 'No title'));
+        li.data('photo', d.payload);
+        li.draggable({
+            scope: 'transfer',
+            helper: 'clone',
+            appendTo: 'body',
+            zIndex: 500,
+            start: function(event, ui){
+                $('.photos li.photo-item').fadeTo(500, 0.2);
+                $('.group').addClass('dragging');
+                ui.helper.addClass('dragging');
+            },
+            stop: function(event, ui){
+                $('.photos li.photo-item').fadeTo(300, 1);
+                $('.group').removeClass('dragging');
+            },
+            cancel: '.title' //So the editable part is easily clickable
+        });
+        li.children('.title').on('DOMCharacterDataModified', function(){
+                li.data('photo', {src: d.payload.src, title: $(this).text()});});
+        gallery.append(li.addClass('shared'));
     });
 
     $(window).unload(function(){
@@ -118,7 +137,11 @@ $(function(){
             fetchPhotos(userTags.length > 0 ? userTags.replace(/\s/g, '').split(',') : defaultTags);
         }
         else if ($(this).hasClass('empty')) {
-            gallery.empty();
+            //gallery.empty();
         }
+    });
+
+    $(document).on('click', 'li.photo-item .close', function(){
+        $(this).parent().fadeTo(500, 0, function(){$(this).remove()});
     });
 });
