@@ -132,11 +132,20 @@
             return false;
         };
 
+        /* @method
+         * Leaves the group and disconnect the socket.
+         */
         $M.leave = function(){
             socket.emit('magellan', buildLeaveMessage(this.node, this.group));
             socket.disconnect();
         };
 
+        /* @method
+         * Transfers some object to one or more nodes.
+         * @param destNode destination node id or '*' to transfer object
+         *        to all the nodes in the group
+         * @param object the object to transfer
+         */
         $M.transfer = function(destNode, object){
             socket.emit('magellan', buildTransferMessage(destNode, this.group, object));
         };

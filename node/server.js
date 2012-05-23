@@ -62,10 +62,15 @@ var registerMagellanHandlers = function(socket) {
 
                 break;
             case 'T':
-                if ((i = nodeAtIndexOf(data.node, groups[data.group])) !== -1) {
+                if (data.node === "*") {
+                    groups[data.group].forEach(function(peer){
+                       peer.endpoint.emit('magellan', data);
+                    });
+                }
+                else if ((i = nodeAtIndexOf(data.node, groups[data.group])) !== -1) {
                      groups[data.group][i].endpoint.emit('magellan', data);
-                 }
-                 break;
+                }
+                break;
         }
     });
     socket.on('disconnect', function() {

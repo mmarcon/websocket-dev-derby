@@ -1,14 +1,9 @@
 $(function(){
 
     /* @todo:
-     * Error handler
-     * Extract AJAX call into a function, to make it optional (i.e. at the
-     * beginning a user may start with an empty set)
      * Choose group name or join a random one (node.js support for this)
-     * Hook up with Magellan for discovery & messaging
      * Photo received UI + comment back
      * Add fake member representing the 'broadcast'
-     * Unload event in FF
      * Button to request pictures later on
     */
 
@@ -19,7 +14,7 @@ $(function(){
     window.DEMO = {};
 
     var DEMO = window.DEMO, defaultTags = ['dude'],
-    fetchPhotos, addPhotos, errorHandler, photoTemplate, gallery = $('.photos'), memberTemplate, memberCounter = 1;
+    fetchPhotos, addPhotos, errorHandler, photoTemplate, gallery = $('.photos'), memberTemplate, memberCounter = 1, messageTemplate;
 
     DEMO.M = Magellan();
     
@@ -27,6 +22,7 @@ $(function(){
     photoTemplate = '<li class="photo-item"><div class="photo" style="background-image:url({SRC})"></div>'+
                     '<div class="title" contenteditable="true">{TITLE}</div><span class="close"></span></li>';
     memberTemplate = '<li class="{MEMBER_ID}"><img src="http://flickholdr.com/32/32/person/{COUNTER}" alt="{MEMBER_NAME}" /><h4>{MEMBER_NAME}</h4></li>';
+    messageTemplate = '<h3>{TITLE}</h3><p>{TEXT}</p>';
 
     DEMO.M.join(null, 'test-group');
 
@@ -109,7 +105,8 @@ $(function(){
     };
 
     errorHandler = function(error){
-
+        var errorMessage = $(messageTemplate.replace(/\{TITLE\}/, 'Error').replace(/\{TEXT\}/, 'Oooops! An error occured. <br/> Reload the page and try again.'));
+        $('.message').append(errorMessage);
     };
 
     /*Get photos via Flickr API with the assigned tags*/
