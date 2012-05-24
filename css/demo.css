@@ -70,6 +70,17 @@ li.photo-item .photo {
 	background-position: center top;
 	background-repeat: no-repeat;
 	background-size: cover;
+	position: relative;
+}
+
+li.photo-item .photo a {
+	display: block;
+	background: transparent url(../img/flickr18.png) no-repeat center center;
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	bottom: 0px;
+	right: 3px;
 }
 
 li.photo-item .title {
@@ -150,7 +161,7 @@ li.photo-item .title {
 	margin-left: 40px;
 }
 
-.init-form {
+.form {
 	font-size: 14px;
 	width: 400px;
 	height: 250px;
@@ -162,34 +173,36 @@ li.photo-item .title {
 	background: #fff;
 }
 
-.init-form p {
+.form p {
 	line-height: 1.2;
 }
 
-.init-form p.separator {
+.form p.separator {
 	text-align: center;
 	font-size: 18px;
 	font-weight: bold;
 	padding: 20px;
 }
 
-.init-form p.empty {
+.form p.empty {
 	text-align: center;
 }
 
-.init-form form {
+.form form {
 	margin-top: 20px;
 }
 
-.init-form label, input {
+.form label, input {
 	display: inline-block;
+	height: 30px;
 }
 
-.init-form label {
+.form label {
 	font-weight: bold;
+	width: 125px;
 }
 
-.init-form input {
+.form input {
 	border: 0;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 14px;
@@ -198,7 +211,7 @@ li.photo-item .title {
 	border-bottom: 1px solid #666;
 }
 
-.init-form a.button {
+.form a.button {
 	text-decoration: none;
 	color: #fff;
 	background-color: #222;
@@ -213,6 +226,10 @@ li.photo-item .title {
 	border-radius: 4px;
 }
 
-.init-form a.empty {
+.form a.empty {
 	padding: 10px;
+}
+
+.form.init-form {
+	display: none;
 }

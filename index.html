@@ -10,17 +10,32 @@
 			<ul class="photos">
 
 			</ul>
-			<div class="init-form">
-			<p>Lorem ipsum est magna occaecat consequat velit tempor qui esse est reprehenderit ut commodo officia Duis minim qui voluptate qui ullamco eiusmod non in.</p>
-			<form>
-				<label for="tags">Enter tags</label>
-				<input type="text" name="tags" id="tags" placeholder="people,beer,mokey"/>
-				<a href="#fetch" class="fetch button">Go!</a>
-			</form>
-			<p class="separator">- OR -</p>
-			<p class="empty">
-			<a href="#fetch" class="empty button">Start with an empty set</a>
-			</p>
+			<div class="init-form form">
+				<p>Pick a topic, choose the right tags, explore photogalleries from Flickr and share pictures with your friends.</p>
+				<form>
+					<label for="tags">Enter some tags</label>
+					<input type="text" name="tags" id="tags" placeholder="people,beer,monkey"/>
+					<a href="#fetch" class="fetch button">Go!</a>
+				</form>
+				<p class="separator">- OR -</p>
+				<p class="empty">
+				<a href="#fetch" class="empty button">Start with an empty set</a>
+				</p>
+			</div>
+			<div class="group-form form">
+				<p>Choose a name, create a new group or join an existing one and share photos with friends.</p>
+				<form>
+					<label for="nodename">Enter your name</label>
+					<input type="text" name="nodename" id="nodename" placeholder="My name"/>
+					<label for="groupname">Enter group name</label>
+					<input type="text" name="groupname" id="groupname" placeholder="My awesome group name"/>
+					<a href="#makegroup" class="makegroup button group-button">Go!</a>
+				</form>
+				<p class="separator">- OR -</p>
+				<p class="empty">
+				<a href="#makegroup" class="empty button pickgroup group-button">Pick a random group!</a>
+				</p>
+			</div>
 			<div class="message"></div>
 		</div>
 		</div>
@@ -32,6 +47,7 @@
 				<li><img src="http://flickholdr.com/32/32/person/2" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
 				<li><img src="http://flickholdr.com/32/32/person/3" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
 				-->
+				<li class="broadcast" data-magellannode="*"><img src="img/group.png" alt="Group"/><h4>All group</h4></li>
 			</ul>
 		</div>
 

@@ -2,7 +2,6 @@ describe('Magellan [Discovery Module]', function(){
 	var magellanObject, io, socket;
 
 	beforeEach(function() {
-		magellanObject = Magellan();
 		//io.connect & socket object mock
 		socket = {
 			emit: jasmine.createSpy('Socket.io::socket::emit'),
@@ -16,6 +15,13 @@ describe('Magellan [Discovery Module]', function(){
 	});
 
 	describe('Discovery', function(){
+		beforeEach(function(){
+			magellanObject = Magellan();
+		});
+		afterEach(function(){
+			magellanObject.tearDown();
+			magellanObject = null;
+		});
 		it('Should attempt a connection and join/create a group ' +
 			'and setup the necessary listeners.', function(){
 			magellanObject.join('node-0-123456', 'group-0234-3212532521');
@@ -25,7 +31,7 @@ describe('Magellan [Discovery Module]', function(){
 				                                      group: 'group-0234-3212532521',
 				                                  	  display: 'node-0-123456'});
 			expect(socket.on).toHaveBeenCalledWith('magellan', jasmine.any(Function));
-			expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
+			//expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
 		});
 		it('Should attempt a connection and join/create a group ' +
 			'and setup the necessary listeners. ' +
@@ -37,7 +43,7 @@ describe('Magellan [Discovery Module]', function(){
 				                                      group: jasmine.any(String),
 				                                  	  display: 'The Monkey'});
 			expect(socket.on).toHaveBeenCalledWith('magellan', jasmine.any(Function));
-			expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
+			//expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
 		});
 		it('Should attempt a connection and join/create a group ' +
 			'and setup the necessary listeners. ' +
@@ -49,7 +55,7 @@ describe('Magellan [Discovery Module]', function(){
 				                                      group: 'group-0234-3212532521',
 				                                  	  display: 'The Monkey'});
 			expect(socket.on).toHaveBeenCalledWith('magellan', jasmine.any(Function));
-			expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
+			//expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
 		});
 		it('Should attempt a connection and join/create the group specified in the URL ' +
 			'and setup the necessary listeners.', function(){
@@ -65,7 +71,7 @@ describe('Magellan [Discovery Module]', function(){
 				                                      group: 'monkey-group',
 				                                      display: 'node-0-123456'});
 			expect(socket.on).toHaveBeenCalledWith('magellan', jasmine.any(Function));
-			expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
+			//expect(socket.on).toHaveBeenCalledWith('disconnect', jasmine.any(Function));
 		});
 		it('Should disconnect properly.', function(){
 			magellanObject.join('node-0-123456', 'group-0234-3212532521');
@@ -94,7 +100,8 @@ describe('Magellan [Discovery Module]', function(){
 			expect(socket.emit).toHaveBeenCalledWith('magellan', {type: 'T',
 				                                      node: 'node-0-654321',
 				                                      group: 'group-0234-3212532521',
-				                                  	  payload: {foo: 'bar'}});
+				                                  	  payload: {foo: 'bar'},
+				                                  	  sender: 'node-0-123456'});
 		});
 	});
 });

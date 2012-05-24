@@ -12,7 +12,8 @@
         Messages = {
             join: 'J',
             leave: 'L',
-            transfer: 'T'
+            transfer: 'T',
+            groupassigned: 'G'
         }, $M,
         socket,
         eventHandlers = {},
@@ -31,6 +32,7 @@
         $M = Magellan.prototype;
         Magellan.defaults = Settings; //Mostly for testing purpose
         Magellan.Event = Messages;
+        Magellan.AssignGroup = 'm.group.assign';
         Magellan.getLocationObject = function(){ //Easier to test this way
             return window.location;
         };
@@ -53,8 +55,8 @@
             return buildMessage(Messages.leave, {node: nodeName, group: groupName});
         };
 
-        buildTransferMessage = function(nodeName, groupName, payload) {
-            return buildMessage(Messages.transfer, {node: nodeName, group: groupName, payload: payload});
+        buildTransferMessage = function(nodeName, groupName, payload, sender) {
+            return buildMessage(Messages.transfer, {node: nodeName, group: groupName, payload: payload, sender: sender});
         };
 
         randomizeGroupName = function(){
@@ -105,16 +107,24 @@
             displayName = displayName || nodeName;
 
             //Set properties of this for future use
-            $M.node = nodeName;
-            $M.group = groupName;
-            $M.displayName = displayName;
+            this.node = nodeName;
+            this.group = groupName;
+            this.displayName = displayName;
             if (Settings.useLocalStorage) {
                 setNodeNameInLocalStorage(nodeName);
             }
 
-            socket = io.connect(Settings.server);
+            socket = socket || io.connect(Settings.server);
             socket.on('magellan', globalEventHandler);
-            socket.on('disconnect', function(){});
+            //socket.on('disconnect', function(){});
+
+            if(groupName === Magellan.AssignGroup) {
+                this.registerEventHandler(Messages.groupassigned, function(data){
+                    console.log('Group is ' + data.group);
+                    this.group = data.group;
+                });
+            }
+
             socket.emit('magellan', buildJoinMessage(nodeName, groupName, displayName));
         };
 
@@ -136,8 +146,10 @@
          * Leaves the group and disconnect the socket.
          */
         $M.leave = function(){
-            socket.emit('magellan', buildLeaveMessage(this.node, this.group));
-            socket.disconnect();
+            if (socket) {
+                socket.emit('magellan', buildLeaveMessage(this.node, this.group));
+                socket.disconnect();
+            }
         };
 
         /* @method
@@ -147,11 +159,16 @@
          * @param object the object to transfer
          */
         $M.transfer = function(destNode, object){
-            socket.emit('magellan', buildTransferMessage(destNode, this.group, object));
+            socket.emit('magellan', buildTransferMessage(destNode, this.group, object, this.node));
         };
 
         $M.cleanUp = function(){
             removeNodeNameFromLocalStorage();
+        };
+
+        $M.tearDown = function(){
+            socket = null;
+            eventHandlers = {};
         };
 
 })(this);

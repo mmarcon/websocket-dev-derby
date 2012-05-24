@@ -5,7 +5,8 @@ io.set('log level', 1);
 
 app.listen(8001);
 
-var groups = {}, sockets = {};
+var groups = {}, sockets = {}, ASSIGN_GROUP = 'm.group.assign',
+    RANDOM_GROUP_NAMES = ['Nyz','Burlt','Irc','Zhayn','Lour','Ormk','Swayn','Itnt','Itany','Thik','Edray','Erake','Oquea','Einei','Dayr','Achl','Ebany','Yurnu','Irisa','Jor','Sloup','Ackk','Arr','Ylore','Banb','Cerr','Isw','Alerr','Sniep','Yano','Opoli','Irn','Tanw','Reent','Suint','Otaso','Samst','Tonm','Irph','Awaro','Aquai','Kaed','Aughl','Eldd','Torl','Eati','Ashb','Certh','Iriso','Snud','Yiau','Meush','Alyee','Ysami','Nish','Ems','Asrt','Yomy','Irs','Rayl','Risnn','Onyi','Yustu','Ormr','Pall','Treysh','Yasy','Iskela','Otona','Enthgh','Isi','Zial','Athl','Aquee','Verph','Esero','Orl','Neard','Gaut','Iall','Elmz','Engr','Austu','Yighta','Soc','Udane','Emy','Layd','Nielt','Whird','Fif','Uene','Adp','Issl','Hinp','Thraeph','Lild','Deyb','Ildd','Sayk','Echt','Piant','Uilde','Ikina','Enq','Lyel','Tond','Burk','Chaq','Doiy','Atz','Garl','Iasho','Aunta','Shyt','Quard','Struich','Ykina','Umlt'];
 
 var nodeAtIndexOf = function(node, array){
     var j;
@@ -17,6 +18,18 @@ var nodeAtIndexOf = function(node, array){
         }
     }
     return -1;
+},
+getRandomGroup = function(){
+    var group, g;
+    for (g in groups) {
+        if (groups.hasOwnProperty(g) && groups[g].length < 10) {
+            group = g;
+        }
+    }
+    if (!group) {
+        group = RANDOM_GROUP_NAMES[Math.floor(RANDOM_GROUP_NAMES.length * Math.random())];
+    }
+    return group;
 },
 buildMessage = function(type, content){
     var message = {type: type}, p;
@@ -30,10 +43,14 @@ buildMessage = function(type, content){
 
 buildJoinMessage = function(nodeName, groupName, displayName) {
     return buildMessage('J', {node: nodeName, group: groupName, display: displayName});
-};
+},
 
 buildLeaveMessage = function(nodeName, groupName, displayName) {
     return buildMessage('L', {node: nodeName, group: groupName, display: displayName});
+},
+
+buildAssignGroupMessage = function(groupName){
+    return buildMessage('G', {group: groupName});
 };
 
 var registerMagellanHandlers = function(socket) {
@@ -42,6 +59,10 @@ var registerMagellanHandlers = function(socket) {
         console.log('[Magellan]', data);
         switch(data.type) {
             case 'J':
+                if (data.group === ASSIGN_GROUP) {
+                    data.group = getRandomGroup();
+                    socket.emit('magellan', buildAssignGroupMessage(data.group));
+                }
                 //data = {type: 'J', node: String, group: String, display: String}
                 if(!groups[data.group]) {
                     //First node in the group
@@ -64,10 +85,12 @@ var registerMagellanHandlers = function(socket) {
             case 'T':
                 if (data.node === "*") {
                     groups[data.group].forEach(function(peer){
-                       peer.endpoint.emit('magellan', data);
+                        if (peer.node !== data.sender) {
+                            peer.endpoint.emit('magellan', data);
+                        }
                     });
                 }
-                else if ((i = nodeAtIndexOf(data.node, groups[data.group])) !== -1) {
+                else if ((index = nodeAtIndexOf(data.node, groups[data.group])) !== -1) {
                      groups[data.group][i].endpoint.emit('magellan', data);
                 }
                 break;
