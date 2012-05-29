@@ -1,3 +1,24 @@
+/*
+ * Copyright (C) 2012 Massimiliano Marcon
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+
 (function(window){
     'use strict';
     var Magellan = window.Magellan = function(){
@@ -6,8 +27,8 @@
             }
         },
         Settings = {
-            server: 'http://192.168.5.103:8001',
-            useLocalStorage: true
+            server: 'wss://photoexplorer.jit.su:80',
+            useLocalStorage: false
         },
         Messages = {
             join: 'J',
@@ -73,7 +94,7 @@
         };
 
         randomizeNodeName = function(){
-            return 'node-' + Math.random().toFixed(5).replace(/\./, '-');
+            return 'node-' + Math.random().toFixed(8).replace(/\./, '-');
         };
 
         getNodeNameFromLocalStorage = function(){
@@ -93,7 +114,7 @@
             for (handlerId in eventHandlers) {
                 if (eventHandlers.hasOwnProperty(handlerId) &&
                     eventHandlers[handlerId].type === data.type) {
-                    eventHandlers[handlerId].handler.call(data, data);
+                    eventHandlers[handlerId].handler.call(this, data);
                 }
             }
         };
@@ -120,9 +141,11 @@
 
             if(groupName === Magellan.AssignGroup) {
                 this.registerEventHandler(Messages.groupassigned, function(data){
-                    console.log('Group is ' + data.group);
                     this.group = data.group;
                 });
+            }
+            else {
+                globalEventHandler.call(this, {type: Messages.groupassigned, group: groupName});
             }
 
             socket.emit('magellan', buildJoinMessage(nodeName, groupName, displayName));

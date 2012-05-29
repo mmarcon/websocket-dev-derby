@@ -1,8 +1,27 @@
 <!doctype html>
+<!--
+  Copyright (C) 2012 Massimiliano Marcon
+  
+  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+  and associated documentation files (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+  and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included
+  in all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+  FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Shared Dashboard</title>
+		<title>Discover photos with your friends!</title>
 		<link rel="stylesheet" type="text/css" href="css/demo.css">
 	</head>
 	<body>
@@ -10,51 +29,78 @@
 			<ul class="photos">
 
 			</ul>
-			<div class="init-form form">
-				<p>Pick a topic, choose the right tags, explore photogalleries from Flickr and share pictures with your friends.</p>
-				<form>
-					<label for="tags">Enter some tags</label>
-					<input type="text" name="tags" id="tags" placeholder="people,beer,monkey"/>
-					<a href="#fetch" class="fetch button">Go!</a>
-				</form>
-				<p class="separator">- OR -</p>
-				<p class="empty">
-				<a href="#fetch" class="empty button">Start with an empty set</a>
-				</p>
-			</div>
-			<div class="group-form form">
-				<p>Choose a name, create a new group or join an existing one and share photos with friends.</p>
-				<form>
-					<label for="nodename">Enter your name</label>
-					<input type="text" name="nodename" id="nodename" placeholder="My name"/>
-					<label for="groupname">Enter group name</label>
-					<input type="text" name="groupname" id="groupname" placeholder="My awesome group name"/>
-					<a href="#makegroup" class="makegroup button group-button">Go!</a>
-				</form>
-				<p class="separator">- OR -</p>
-				<p class="empty">
-				<a href="#makegroup" class="empty button pickgroup group-button">Pick a random group!</a>
-				</p>
-			</div>
-			<div class="message"></div>
 		</div>
+		<div class="init-form form">
+			<p>Pick a topic, choose the right tags, explore photogalleries from Flickr and share pictures with your friends.</p>
+			<form>
+				<label for="tags">Enter some tags</label>
+				<input type="text" name="tags" id="tags" placeholder="people,beer,monkey"/>
+				<a href="#fetch" class="fetch button">Go!</a>
+			</form>
+			<p class="separator">- OR -</p>
+			<p class="empty">
+			<a href="#fetch" class="empty button">Start with an empty set</a>
+			</p>
+		</div>
+		<div class="video-intro form">
+			<iframe width="380" height="213" src="http://www.youtube.com/embed/PtYSITqPrh8?rel=0" frameborder="0" allowfullscreen></iframe>
+			<p class="empty">
+				<a href="#go" class="empty button go">Get started!</a>
+			</p>
+		</div>
+		<div class="group-form form">
+			<p>Choose a name, create a new group or join an existing one and share photos with friends.</p>
+			<form>
+				<label for="nodename">Enter your name</label>
+				<input type="text" name="nodename" id="nodename" placeholder="My name"/>
+				<label for="groupname">Enter group name</label>
+				<input type="text" name="groupname" id="groupname" placeholder="My awesome group name"/>
+				<a href="#makegroup" class="makegroup button group-button">Go!</a>
+			</form>
+			<p class="separator">- OR -</p>
+			<p class="empty">
+			<a href="#makegroup" class="empty button pickgroup group-button">Pick a random group!</a>
+			</p>
+		</div>
+		<div class="message"></div>
 		</div>
 		<div class="group">
-			<h3>Group Name</h3>
+			<h3></h3>
 			<ul class="members">
-				<!--
-				<li><img src="http://flickholdr.com/32/32/person/1" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
-				<li><img src="http://flickholdr.com/32/32/person/2" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
-				<li><img src="http://flickholdr.com/32/32/person/3" alt="Placeholder image from flickholdr.com" /><h4>Member name</h4></li>
-				-->
 				<li class="broadcast" data-magellannode="*"><img src="img/group.png" alt="Group"/><h4>All group</h4></li>
 			</ul>
 		</div>
+		<div class="start-over">
+			<a href="#start-over">Add Photos or Start over</a>
+		</div>
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		<div class="tutorial">
+			<section class="step-video">
+				<h1><span class="flickr-blue">fli</span>so<span class="flickr-blue">ck</span>et<span class="flickr-pink">r</span></h1>
+				<p>Have fun exploring <span class="flickr-blue">flick</span><span class="flickr-pink">r</span> photos with friends.</p>
+			</section>
+			<section class="step-group">
+				<h1>Find Friends...</h1>
+				<p>Pick a username and the group you want to join.</p>
+			</section>
+			<section class="step-init">
+				<h1>Discover amazing Flickr photos toghether.</h1>
+				<p>Add some tags, or start with an empty set.</p>
+			</section>
+			<section class="step-app">
+				<h1>Drag&amp;Drop photos to friends.</h1>
+				<p>R2-D2 is a BOT: if you give him a photo it will always give one back to you.</p>
+			</section>
+		</div>
+
+		<audio preload="auto" loop="false" autobuffer> 
+  			<source src="audio/incoming.mp3" />
+  			<source src="audio/incoming.ogg" />
+		</audio>
+
+		<script src="3rd-party/jquery.min.js"></script>
 		<script src="3rd-party/jquery-ui/css/js/ui.custom.min.js"></script>
-		<!--script src="test/3rd-party/jquery.min.js"></script-->
-		<script src="http://localhost:8001/socket.io/socket.io.js"></script>
+		<script src="http://photoexplorer.jit.su/socket.io/socket.io.js"></script>
 		<script src="js/magellan.js"></script>
 		<script src="js/demo.js"></script>
 	</body>
