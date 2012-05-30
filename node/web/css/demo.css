@@ -1,0 +1,344 @@
+/*
+ * Copyright (C) 2012 Massimiliano Marcon
+
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+ * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,300|Annie+Use+Your+Telescope);
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;font:inherit;vertical-align:baseline}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
+body{line-height:1}
+ol,ul{list-style:none}
+blockquote,q{quotes:none}
+blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}
+ins{text-decoration:none}
+del{text-decoration:line-through}
+table{border-collapse:collapse;border-spacing:0}
+
+body, html {
+	height: 100%;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	background-color: #111;
+}
+
+.dashboard {
+	margin-right: 27%;
+	position: relative;
+	height: 100%;
+}
+
+.photos {
+	overflow: hidden;
+}
+
+li.photo-item {
+	list-style-type: none;
+	float: left;
+	margin: 15px;
+	background-color: #fff;
+	width: 160px;
+	height: 180px;
+	position: relative;
+}
+
+li.photo-item .close {
+	display: block;
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	z-index: 600;
+	background: transparent url(../img/close.png) no-repeat center center;
+	top: -12px;
+	right: -12px;
+	cursor: pointer;
+}
+
+li.photo-item.dragging {
+	/*box-shadow: 0 0 8px #ccc;*/
+	border: 1px solid #ccc;
+}
+
+li.photo-item.shared {
+	background-image: url(../img/shared.png);
+	background-position: bottom left;
+	background-repeat: no-repeat;
+	background-color: #ff6347;
+}
+
+li.photo-item .photo {
+	width: 140px;
+	height: 120px;
+	margin: 10px auto;
+	background-color: #111;
+	background-position: center top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+}
+
+li.photo-item .photo a {
+	display: block;
+	background: transparent url(../img/flickr18.png) no-repeat center center;
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	bottom: 0px;
+	right: 3px;
+}
+
+li.photo-item .title {
+	font-family: 'Annie Use Your Telescope', cursive;
+	font-size: 20px;
+	padding: 3px 5px;
+	text-align: center;
+	white-space:nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.2;
+}
+
+.group {
+	position: fixed;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 25%;
+	padding: 5px 5px 60px 5px;
+	background-color: #eee;
+	z-index: 100;
+	overflow: auto;
+}
+
+.group.dragging {
+	background-color: #fff;
+}
+
+.group h3 {
+	font-family: 'Annie Use Your Telescope', cursive;
+	font-size: 75px;
+	margin-bottom: 18px;
+	color: #111;
+	text-align: center;
+	line-height: 1.2;
+}
+
+.group .members {
+	background-color: #222;
+	border-radius: 5px;
+	display: none;
+}
+
+.group .members li {
+	color: #eee;
+	padding: 5px;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.00)), color-stop(1, rgba(0,0,0,0.10)));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -o-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -ms-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	border-bottom: 1px solid #000;
+	border-top: 1px dashed #444;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 32px;
+	clear: both;
+	height: 32px;
+	cursor: pointer;
+}
+
+.group .members li.hovering {
+	height: 200px;
+}
+
+.group .members li:first-child {
+	border-top: none;
+}
+
+.group .members li:last-child {
+	border-bottom: none;
+}
+
+.group .members li img {
+	float: left;
+	border-radius: 6px;
+}
+
+.group .members li h4 {
+	margin-left: 40px;
+}
+
+.form {
+	font-size: 14px;
+	width: 400px;
+	height: 250px;
+	padding: 10px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -135px 0 0 -210px;
+	background: #fff;
+	z-index: 1000;
+	display: none;
+}
+
+.form iframe {
+	margin: 0 auto 20px auto;
+	display: block;
+}
+
+.form.video-intro {
+	height: 280px;
+}
+
+.form p {
+	line-height: 1.2;
+}
+
+.form p.separator {
+	text-align: center;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 20px;
+}
+
+.form p.empty {
+	text-align: center;
+}
+
+.form form {
+	margin-top: 20px;
+}
+
+.form label, input {
+	display: inline-block;
+	height: 30px;
+}
+
+.form label {
+	font-weight: bold;
+	width: 125px;
+}
+
+.form input {
+	border: 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 14px;
+	padding: 3px;
+	width: 200px;
+	border-bottom: 1px solid #666;
+}
+
+.form a.button {
+	text-decoration: none;
+	color: #fff;
+	background-color: #222;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.00)), color-stop(1, rgba(0,0,0,0.10)));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -o-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -ms-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	display: inline-block;
+	padding: 5px;
+	border-radius: 4px;
+}
+
+.form a.empty {
+	padding: 10px;
+}
+
+.form.init-form {
+	display: none;
+}
+
+.form.group-form {
+	display: none;
+}
+
+.start-over {
+	position: fixed;
+	width: 25%;
+	bottom: 0;
+	right: 0;
+	height: 50px;
+	background: transparent;
+	padding: 5px;
+	z-index: 500;
+	display: none;
+}
+
+.start-over a {
+	display: block;
+	text-align: center;
+	font-size: 20px;
+	color: #fff;
+	text-decoration: none;
+	font-weight: 300;
+	line-height: 40px;
+	margin: 5px;
+	background-color: #111;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, rgba(0,0,0,0.00)), color-stop(1, rgba(0,0,0,0.10)));
+	background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -moz-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -o-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: -ms-linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	background-image: linear-gradient(top, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.10) 100%);
+	border-radius: 4px;
+}
+
+.tutorial {
+	font-family: 'Annie Use Your Telescope', cursive;
+	color: #fff;
+	background-color: rgba(0,0,0,0.75);
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 900;
+	padding: 10px;
+	text-align: center;
+	line-height: 1.2;
+	font-weight: 100;
+	display: none;
+}
+
+.tutorial h1 {
+	font-size: 60px;
+}
+
+.tutorial .flickr-blue {
+	color: rgb(0,99,220);
+}
+
+.tutorial .flickr-pink {
+	color: rgb(255,0,132);	
+}
+
+.tutorial p {
+	margin-top: 20px;
+	font-size: 30px;
+}
+
+.tutorial section {
+	display: none;
+}

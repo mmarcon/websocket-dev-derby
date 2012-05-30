@@ -18,13 +18,16 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var app = require('express').createServer(),
+var express = require('express'),
+    app = express.createServer(),
     io = require('socket.io').listen(app),
-    http = require('http');
+    http = require('http'),
+    path = require('path');
 
 io.set('log level', 1);
 
-app.listen(8001);
+app.listen(80);
+app.use(express.static(path.normalize(__dirname + '/web/')));
 
 var groups = {}, sockets = {}, ASSIGN_GROUP = 'm.group.assign',
     RANDOM_GROUP_NAMES = ['Nyz','Burlt','Irc','Zhayn','Lour','Ormk','Swayn','Itnt','Itany','Thik','Edray','Erake','Oquea','Einei','Dayr','Achl','Ebany','Yurnu','Irisa','Jor','Sloup','Ackk','Arr','Ylore','Banb','Cerr','Isw','Alerr','Sniep','Yano','Opoli','Irn','Tanw','Reent','Suint','Otaso','Samst','Tonm','Irph','Awaro','Aquai','Kaed','Aughl','Eldd','Torl','Eati','Ashb','Certh','Iriso','Snud','Yiau','Meush','Alyee','Ysami','Nish','Ems','Asrt','Yomy','Irs','Rayl','Risnn','Onyi','Yustu','Ormr','Pall','Treysh','Yasy','Iskela','Otona','Enthgh','Isi','Zial','Athl','Aquee','Verph','Esero','Orl','Neard','Gaut','Iall','Elmz','Engr','Austu','Yighta','Soc','Udane','Emy','Layd','Nielt','Whird','Fif','Uene','Adp','Issl','Hinp','Thraeph','Lild','Deyb','Ildd','Sayk','Echt','Piant','Uilde','Ikina','Enq','Lyel','Tond','Burk','Chaq','Doiy','Atz','Garl','Iasho','Aunta','Shyt','Quard','Struich','Ykina','Umlt'],
@@ -39,7 +42,7 @@ var groups = {}, sockets = {}, ASSIGN_GROUP = 'm.group.assign',
     BOT = {
         node: 'node-418648354825482-R2-D2',
         group: 'group-418648354825482-R2-D2',
-        display: 'R2-D2'
+        display: 'R2-D2 (BOT)'
     };
 
 var getFlickrPhotos = function(){
